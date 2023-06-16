@@ -5,7 +5,7 @@ __all__ = ['CancelFitException', 'CancelBatchException', 'CancelEpochException',
            'MetricsCB', 'DeviceCB', 'TrainCB', 'ProgressCB', 'with_cbs', 'Learner', 'TrainLearner', 'MomentumLearner',
            'LRFinderCB']
 
-# %% ../nbs/05_learner.ipynb 3
+# %% ../nbs/05_learner.ipynb 2
 import math,torch,matplotlib.pyplot as plt
 import fastcore.all as fc
 from collections.abc import Mapping
@@ -20,31 +20,31 @@ from .conv import *
 
 from fastprogress import progress_bar,master_bar
 
-# %% ../nbs/05_learner.ipynb 16
+# %% ../nbs/05_learner.ipynb 15
 class CancelFitException(Exception): pass
 class CancelBatchException(Exception): pass
 class CancelEpochException(Exception): pass
 
-# %% ../nbs/05_learner.ipynb 17
+# %% ../nbs/05_learner.ipynb 16
 class Callback(): order = 0
 
-# %% ../nbs/05_learner.ipynb 18
+# %% ../nbs/05_learner.ipynb 17
 def run_cbs(cbs, method_nm, learn=None):
     for cb in sorted(cbs, key=attrgetter('order')):
         method = getattr(cb, method_nm, None)
         if method is not None:
             method(learn)
 
-# %% ../nbs/05_learner.ipynb 24
+# %% ../nbs/05_learner.ipynb 23
 class SingleBatchCB(Callback):
     order = 1
     def after_batch(self, learn):
         raise CancelFitException()
 
-# %% ../nbs/05_learner.ipynb 32
+# %% ../nbs/05_learner.ipynb 31
 from torcheval.metrics import MulticlassAccuracy, Mean
 
-# %% ../nbs/05_learner.ipynb 37
+# %% ../nbs/05_learner.ipynb 36
 def to_cpu(x):
     if isinstance(x, Mapping):
         return {k:to_cpu(v) for k, v in x.items()}
@@ -55,7 +55,7 @@ def to_cpu(x):
     res = x.detach().cpu()
     return res.float() if res.dtype == torch.float16 else res
 
-# %% ../nbs/05_learner.ipynb 38
+# %% ../nbs/05_learner.ipynb 37
 class MetricsCB(Callback):
     def __init__(self, *ms, **metrics):
         for o in ms:
@@ -82,7 +82,7 @@ class MetricsCB(Callback):
             m.update(to_cpu(learn.preds), y)
         self.loss.update(to_cpu(learn.loss), weight=len(x))
 
-# %% ../nbs/05_learner.ipynb 41
+# %% ../nbs/05_learner.ipynb 40
 class DeviceCB(Callback):
     def __init__(self, device=def_device): fc.store_attr()
     def before_fit(self, learn):
@@ -229,10 +229,10 @@ class MomentumLearner(TrainLearner):
             for p in self.model.parameters():
                 p.grad *= self.mom
 
-# %% ../nbs/05_learner.ipynb 59
+# %% ../nbs/05_learner.ipynb 61
 from torch.optim.lr_scheduler import ExponentialLR
 
-# %% ../nbs/05_learner.ipynb 60
+# %% ../nbs/05_learner.ipynb 62
 class LRFinderCB(Callback):
     def __init__(self, gamma=1.3, max_mult=3): fc.store_attr()
 
