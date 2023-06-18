@@ -10,7 +10,7 @@ from .datasets import *
 from .learner import *
 
 # %% auto 0
-__all__ = ['set_seed', 'Hook', 'Hooks', 'HooksCallback', 'append_stats', 'get_hist', 'ActivationStats']
+__all__ = ['set_seed', 'Hook', 'Hooks', 'HooksCallback', 'append_stats', 'get_hist', 'get_min', 'ActivationStats']
 
 # %% ../nbs/06_activations.ipynb 6
 def set_seed(seed, deterministic=False):
@@ -66,6 +66,11 @@ def append_stats(hook, mod, inp, outp):
 
 # %% ../nbs/06_activations.ipynb 53
 def get_hist(h): return torch.stack(h.stats[2]).t().float().log1p()
+
+# %% ../nbs/06_activations.ipynb 56
+def get_min(h):
+    h1 = torch.stack(h.stats[2]).t().float()
+    return h1[0] / h1.sum(0)
 
 # %% ../nbs/06_activations.ipynb 59
 class ActivationStats(HooksCallback):

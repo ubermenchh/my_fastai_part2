@@ -61,12 +61,12 @@ def subplots(
     "A figure and set of subplots to display images of `imsize` inches"
     if figsize is None:
         figsize = (ncols * imsize, nrows * imsize)
-        fig, ax = plt.subplots(nrows, ncols, figsize=figsize, **kwargs)
-        if suptitle is not None:
-            fig.suptitle(suptitle)
-        if nrows * ncols == 1:
-            ax = np.array([ax])
-        return fig, ax
+    fig, ax = plt.subplots(nrows, ncols, figsize=figsize, **kwargs)
+    if suptitle is not None:
+        fig.suptitle(suptitle)
+    if nrows * ncols == 1:
+        ax = np.array([ax])
+    return fig, ax
 
 # %% ../nbs/02_datasets.ipynb 58
 @fc.delegates(subplots)
