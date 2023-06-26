@@ -3,7 +3,7 @@
 # %% auto 0
 __all__ = ['MixedPrecision', 'AccelerateCB']
 
-# %% ../nbs/12_ddpm.ipynb 5
+# %% ../nbs/12_ddpm.ipynb 3
 import pickle,gzip,math,os,time,shutil,torch,random,logging
 import fastcore.all as fc,matplotlib as mpl,numpy as np,matplotlib.pyplot as plt
 from collections.abc import Mapping
@@ -26,7 +26,7 @@ from .sgd import *
 from .resnet import *
 from .augment import *
 
-# %% ../nbs/12_ddpm.ipynb 45
+# %% ../nbs/12_ddpm.ipynb 43
 class MixedPrecision(TrainCB):
     order = DeviceCB.order+10
 
@@ -45,11 +45,11 @@ class MixedPrecision(TrainCB):
         self.scaler.update()
 
 
-# %% ../nbs/12_ddpm.ipynb 52
+# %% ../nbs/12_ddpm.ipynb 50
 from accelerate import Accelerator
 
 
-# %% ../nbs/12_ddpm.ipynb 53
+# %% ../nbs/12_ddpm.ipynb 51
 class AccelerateCB(TrainCB):
     order = DeviceCB.order+10
     def __init__(self, n_inp=1, mixed_precision="fp16"):
