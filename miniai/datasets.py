@@ -13,20 +13,20 @@ from .training import *
 # %% auto 0
 __all__ = ['inplace', 'collate_dict', 'show_image', 'subplots', 'get_grid', 'show_images', 'DataLoaders']
 
-# %% ../nbs/02_datasets.ipynb 28
+# %% ../nbs/02_datasets.ipynb 29
 def inplace(f):
     def _f(b):
         f(b)
         return b
     return _f
 
-# %% ../nbs/02_datasets.ipynb 41
+# %% ../nbs/02_datasets.ipynb 42
 def collate_dict(ds):
     get = itemgetter(*ds.features)
     def _f(b): return get(default_collate(b))
     return _f
 
-# %% ../nbs/02_datasets.ipynb 48
+# %% ../nbs/02_datasets.ipynb 49
 @fc.delegates(plt.Axes.imshow)
 def show_image(im, ax=None, figsize=None, title=None, noframe=True, **kwargs):
     if fc.hasattrs(im, ('cpu', 'permute', 'detach')):
@@ -48,7 +48,7 @@ def show_image(im, ax=None, figsize=None, title=None, noframe=True, **kwargs):
         ax.axis('off')
     return ax
 
-# %% ../nbs/02_datasets.ipynb 53
+# %% ../nbs/02_datasets.ipynb 54
 @fc.delegates(plt.subplots, keep=True)
 def subplots(
     nrows:int=1, # Number of rows in returned axes grid
@@ -68,7 +68,7 @@ def subplots(
         ax = np.array([ax])
     return fig, ax
 
-# %% ../nbs/02_datasets.ipynb 58
+# %% ../nbs/02_datasets.ipynb 59
 @fc.delegates(subplots)
 def get_grid(
     n:int, # Number of axes,
@@ -94,7 +94,7 @@ def get_grid(
         fig.suptitle(title, weight=weight, size=size)
     return fig, axs
 
-# %% ../nbs/02_datasets.ipynb 61
+# %% ../nbs/02_datasets.ipynb 62
 @fc.delegates(subplots)
 def show_images(
     ims:list, # Images to show
@@ -108,7 +108,7 @@ def show_images(
     for im, t, ax in zip_longest(ims, titles or [], axs):
         show_image(im, ax=ax, title=t)
 
-# %% ../nbs/02_datasets.ipynb 68
+# %% ../nbs/02_datasets.ipynb 69
 class DataLoaders:
     def __init__(self, *dls): self.train, self.valid = dls[:2]
     
