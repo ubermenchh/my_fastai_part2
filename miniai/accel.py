@@ -4,7 +4,7 @@
 __all__ = ['MixedPrecision', 'AccelerateCB']
 
 # %% ../nbs/14_ddpm-v2.ipynb 6
-import pickle, gzip, math, os, time, shutil, torch, random, logging
+import pickle, gzip, math, os, time, shutil, torch, random
 import fastcore.all as fc, matplotlib as mpl, numpy as np, matplotlib.pyplot as plt
 from collections.abc import Mapping
 from pathlib import Path
